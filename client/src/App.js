@@ -130,13 +130,23 @@ function App() {
     console.log('🎮 Начало игры - переход на игровой стол');
     
     // Определяем URL игрового стола динамически
-    const hostname = window.location.hostname;
-    const port = window.location.port || '3000';
-    const gameTableHost = hostname !== 'localhost' && hostname !== '127.0.0.1' 
-      ? hostname 
-      : 'localhost';
+    // В production используем относительный путь (HTTPS)
+    // В development используем localhost
+    const isProduction = process.env.NODE_ENV === 'production';
+    let gameTableUrl;
     
-    const gameTableUrl = `http://${gameTableHost}:${port}/game-table-test.html?roomId=${currentRoom.id}&playerName=${encodeURIComponent(playerName)}&playerId=${playerId}`;
+    if (isProduction) {
+      // В production используем относительный путь (тот же домен, HTTPS)
+      gameTableUrl = `/game-table-test.html?roomId=${currentRoom.id}&playerName=${encodeURIComponent(playerName)}&playerId=${playerId}`;
+    } else {
+      // В development используем localhost
+      const hostname = window.location.hostname;
+      const port = window.location.port || '3000';
+      const gameTableHost = hostname !== 'localhost' && hostname !== '127.0.0.1' 
+        ? hostname 
+        : 'localhost';
+      gameTableUrl = `http://${gameTableHost}:${port}/game-table-test.html?roomId=${currentRoom.id}&playerName=${encodeURIComponent(playerName)}&playerId=${playerId}`;
+    }
     
     console.log('🌐 URL игрового стола:', gameTableUrl);
     console.log('🎮 ===== ВЫПОЛНЯЕМ ПЕРЕХОД =====');

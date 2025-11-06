@@ -29,17 +29,15 @@ const OnlineGame = ({ roomId, playerName, playerId, onBackToLobby, onStartGame }
   // Функция для получения URL сервера
   const getServerUrl = () => {
     // Используем API_URL из конфигурации (поддерживает переменные окружения)
-    // eslint-disable-next-line no-undef
-    if (API_URL) {
-      // eslint-disable-next-line no-undef
-      return API_URL;
-    }
-    // Fallback для development
-    const hostname = window.location.hostname;
-    const port = '3006';
-    return hostname !== 'localhost' && hostname !== '127.0.0.1' 
-      ? `http://${hostname}:${port}` 
-      : 'http://localhost:3006';
+    // Если API_URL установлен (через REACT_APP_API_URL), используем его
+    // Иначе используем fallback для development
+    return API_URL || (() => {
+      const hostname = window.location.hostname;
+      const port = '3006';
+      return hostname !== 'localhost' && hostname !== '127.0.0.1' 
+        ? `http://${hostname}:${port}` 
+        : 'http://localhost:3006';
+    })();
   };
 
   // Инициализация Pusher (только при монтировании или изменении roomId)
