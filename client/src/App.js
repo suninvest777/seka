@@ -5,6 +5,7 @@ import Lobby from './components/Lobby';
 import OnlineGame from './components/OnlineGame';
 import GameTable from './components/GameTable';
 import { API_URL } from './config';
+import { pusherConfig } from './pusherConfig';
 import './App.css';
 
 function App() {
@@ -137,9 +138,9 @@ function App() {
     
     if (isProduction) {
       // В production используем относительный путь (тот же домен, HTTPS)
-      // Передаем Pusher credentials через URL параметры
-      const pusherKey = process.env.REACT_APP_PUSHER_KEY || '';
-      const pusherCluster = process.env.REACT_APP_PUSHER_CLUSTER || 'eu';
+      // Передаем Pusher credentials через URL параметры из конфигурации
+      const pusherKey = pusherConfig.key || '';
+      const pusherCluster = pusherConfig.cluster || 'eu';
       gameTableUrl = `/game-table-test.html?roomId=${currentRoom.id}&playerName=${encodeURIComponent(playerName)}&playerId=${playerId}&pusherKey=${encodeURIComponent(pusherKey)}&pusherCluster=${encodeURIComponent(pusherCluster)}`;
     } else {
       // В development используем localhost
