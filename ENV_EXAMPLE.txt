@@ -1,0 +1,19 @@
+# Пример переменных окружения
+# Скопируйте этот файл в .env и заполните своими значениями
+# НЕ коммитьте файл .env в Git!
+
+# Server Configuration
+PORT=3006
+NODE_ENV=development
+
+# Pusher Configuration
+PUSHER_APP_ID=your_pusher_app_id
+PUSHER_KEY=your_pusher_key
+PUSHER_SECRET=your_pusher_secret
+PUSHER_CLUSTER=eu
+
+# Client Configuration (для React)
+REACT_APP_PUSHER_KEY=your_pusher_key
+REACT_APP_PUSHER_CLUSTER=eu
+REACT_APP_API_URL=http://localhost:3006
+

@@ -1,0 +1,40 @@
+services:
+  # Backend API Service
+  - type: web
+    name: seka-api
+    env: node
+    plan: free
+    buildCommand: cd server && npm install
+    startCommand: cd server && npm run prod
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: PUSHER_APP_ID
+        sync: false
+      - key: PUSHER_KEY
+        sync: false
+      - key: PUSHER_SECRET
+        sync: false
+      - key: PUSHER_CLUSTER
+        value: eu
+    healthCheckPath: /api/test
+
+  # Frontend Service
+  - type: web
+    name: seka-client
+    env: static
+    buildCommand: cd client && npm install && npm run build
+    staticPublishPath: client/build
+    envVars:
+      - key: REACT_APP_PUSHER_KEY
+        sync: false
+      - key: REACT_APP_PUSHER_CLUSTER
+        value: eu
+      - key: REACT_APP_API_URL
+        fromService:
+          type: web
+          name: seka-api
+          property: host
+
