@@ -661,6 +661,29 @@
             font-size: 0.4rem;
         }
         
+        /* Улучшенная анимация раздачи карт */
+        .player-card.deck-position {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            z-index: 999;
+            transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                        top 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                        left 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                        opacity 0.3s ease-out;
+        }
+        
+        .player-card.dealt {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+        
+        .player-card.flying {
+            pointer-events: none;
+            z-index: 999;
+        }
+        
         .player-card.expose-revealed {
             animation: cardReveal 0.5s ease-out;
             box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
@@ -669,6 +692,17 @@
         @keyframes cardReveal {
             0% { transform: rotateY(180deg); opacity: 0; }
             100% { transform: rotateY(0deg); opacity: 1; }
+        }
+        
+        @keyframes cardFlyIn {
+            0% { 
+                opacity: 0;
+                transform: scale(0.5) rotate(-180deg);
+            }
+            100% { 
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
         }
         
         .player-points {
@@ -3802,16 +3836,17 @@
             }
         }
 
-        // Анимация раздачи карт (НОВАЯ ВЕРСИЯ) - карты вылетают из стопки в центре
+        // Улучшенная анимация раздачи карт - использует CSS классы для плавной анимации
         function animateCardDeal(players) {
-            console.log('🎴 Начинаем анимацию раздачи карт из стопки');
+            console.log('🎴 Начинаем улучшенную анимацию раздачи карт');
             
             // Получаем элементы
             const deckStack = document.getElementById('deckStack');
             const playerCardsOnTable = document.getElementById('playerCardsOnTable');
             const tableCenter = document.querySelector('.table-center');
+            const pokerTable = document.querySelector('.poker-table');
             
-            if (!deckStack || !playerCardsOnTable || !tableCenter) {
+            if (!deckStack || !playerCardsOnTable || !tableCenter || !pokerTable) {
                 console.error('❌ Не найдены элементы для анимации раздачи');
                 return;
             }
@@ -3823,8 +3858,7 @@
             deckStack.classList.remove('hidden');
             
             // Получаем позиции игроков для размещения карт
-            const pokerTable = document.querySelector('.poker-table');
-            const tableSize = pokerTable ? parseInt(getComputedStyle(pokerTable).width) : 500;
+            const tableSize = parseInt(getComputedStyle(pokerTable).width) || 500;
             const isMobile = window.innerWidth <= 768;
             const borderWidth = isMobile ? 8 : 12;
             const playerRadius = isMobile ? 17.5 : 22.5;
@@ -3835,16 +3869,17 @@
             // Получаем позицию центра стола (откуда будут вылетать карты)
             const centerRect = tableCenter.getBoundingClientRect();
             const tableRect = pokerTable.getBoundingClientRect();
-            const centerX = centerRect.left + centerRect.width / 2 - tableRect.left;
-            const centerY = centerRect.top + centerRect.height / 2 - tableRect.top;
+            const centerX = centerRect.left + centerRect.width / 2;
+            const centerY = centerRect.top + centerRect.height / 2;
             
             let cardCounter = 0;
             const totalCards = players.length * 3;
+            const CARD_DELAY = 100; // Задержка между картами (мс)
             
             // Раздаем по 3 карты каждому игроку с анимацией вылета из стопки
             for (let cardIndex = 0; cardIndex < 3; cardIndex++) {
                 players.forEach((player, playerIndex) => {
-                    const delay = cardCounter * 200; // Задержка между картами
+                    const delay = cardCounter * CARD_DELAY;
                     cardCounter++;
                     
                     setTimeout(() => {
@@ -3857,43 +3892,30 @@
                         const targetX = Math.cos(angle) * cardDistance;
                         const targetY = Math.sin(angle) * cardDistance;
                         
-                        // Вычисляем финальную позицию карты
+                        // Вычисляем финальную позицию карты (относительно стола)
                         const finalX = tableCenterValue + targetX;
                         const finalY = tableCenterValue + targetY;
                         
-                        // Создаем летящую карту (визуальный эффект вылета из стопки)
+                        // Вычисляем финальную позицию на экране
+                        const finalScreenX = tableRect.left + finalX;
+                        const finalScreenY = tableRect.top + finalY;
+                        
+                        // Создаем летящую карту с использованием CSS классов
                         const flyingCard = document.createElement('div');
-                        flyingCard.className = 'player-card back';
-                        flyingCard.style.cssText = `
-                            position: fixed;
-                            left: ${centerX}px;
-                            top: ${centerY}px;
-                            width: 60px;
-                            height: 90px;
-                            z-index: 999;
-                            transform: translate(-50%, -50%) scale(0.8);
-                            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-                            pointer-events: none;
-                        `;
+                        flyingCard.className = 'player-card back deck-position flying';
+                        flyingCard.style.width = '60px';
+                        flyingCard.style.height = '90px';
+                        flyingCard.style.left = `${centerX}px`;
+                        flyingCard.style.top = `${centerY}px`;
                         document.body.appendChild(flyingCard);
                         
-                        // Анимация вылета из центра к позиции игрока
+                        // Запускаем анимацию через requestAnimationFrame для плавности
                         requestAnimationFrame(() => {
-                            const tableRectAfter = pokerTable.getBoundingClientRect();
-                            const finalScreenX = tableRectAfter.left + finalX;
-                            const finalScreenY = tableRectAfter.top + finalY;
-                            
-                            flyingCard.style.cssText = `
-                                position: fixed;
-                                left: ${finalScreenX}px;
-                                top: ${finalScreenY}px;
-                                width: 60px;
-                                height: 90px;
-                                z-index: 999;
-                                transform: translate(-50%, -50%) scale(1);
-                                transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-                                pointer-events: none;
-                            `;
+                            // Перемещаем карту к конечной позиции (смена класса триггерит CSS transition)
+                            flyingCard.style.left = `${finalScreenX}px`;
+                            flyingCard.style.top = `${finalScreenY}px`;
+                            flyingCard.classList.remove('deck-position');
+                            flyingCard.classList.add('dealt');
                             
                             // После завершения полета удаляем летящую карту и создаем карту на столе
                             setTimeout(() => {
@@ -3911,20 +3933,15 @@
                                     playerCardsOnTable.appendChild(cardsContainer);
                                 }
                                 
-                                // Создаем карту на столе с анимацией появления
-                            const cardElement = createCardBack();
-                                cardElement.style.cssText = `
-                                    opacity: 0;
-                                    transform: scale(0.5) rotate(-180deg);
-                                    animation: cardFlyIn 0.5s ease-out forwards;
-                                `;
-                                
+                                // Создаем карту на столе с анимацией появления (используем CSS класс)
+                                const cardElement = createCardBack();
+                                cardElement.style.animation = 'cardFlyIn 0.5s ease-out forwards';
                                 cardsContainer.appendChild(cardElement);
                                 
                                 // Эффект уменьшения стопки
                                 if (cardCounter === totalCards) {
                                     // Последняя карта - скрываем стопку
-                            setTimeout(() => {
+                                    setTimeout(() => {
                                         deckStack.classList.add('hidden');
                                     }, 300);
                                 } else if (cardCounter % 5 === 0) {
@@ -3934,13 +3951,13 @@
                                         deckStack.classList.remove('shrinking');
                                     }, 300);
                                 }
-                            }, 600); // Время полета карты
+                            }, 600); // Время полета карты (соответствует CSS transition)
                         });
                     }, delay);
                 });
             }
             
-            console.log('✅ Анимация раздачи карт из стопки запущена');
+            console.log(`✅ Анимация раздачи ${totalCards} карт запущена (задержка между картами: ${CARD_DELAY}мс)`);
         }
 
         // Создание карты-рубашки
