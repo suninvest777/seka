@@ -2999,6 +2999,17 @@
                 actionPanel.classList.remove('hidden');
                 wakeUpSection.classList.add('hidden');
                 
+                // ИСПРАВЛЕНИЕ: Скрываем все обычные кнопки ходов (raise, call, fold, all-in)
+                const callBtn = document.getElementById('callBtn');
+                const raiseBtn = document.querySelector('.btn-raise');
+                const foldBtn = document.getElementById('foldBtn');
+                const allInBtn = document.getElementById('allInBtn');
+                
+                if (callBtn) callBtn.style.display = 'none';
+                if (raiseBtn) raiseBtn.style.display = 'none';
+                if (foldBtn) foldBtn.style.display = 'none';
+                if (allInBtn) allInBtn.style.display = 'none';
+                
                 // Показываем кнопки для вступления в Вару
                 if (!currentPlayer.isInVara) {
                     if (varaBtn) varaBtn.style.display = 'block';
@@ -3007,7 +3018,7 @@
                     if (varaAmount) {
                         varaAmount.textContent = requiredAmount;
                     }
-            } else {
+                } else {
                     // Игрок уже в Варе - скрываем кнопки вступления
                     if (varaBtn) varaBtn.style.display = 'none';
                     if (refuseVaraBtn) refuseVaraBtn.style.display = 'none';
