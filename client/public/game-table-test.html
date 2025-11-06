@@ -2161,8 +2161,35 @@
 
         // Получение URL сервера
         function getServerUrl() {
+            // В production используем HTTPS URL из переменной окружения или определяем автоматически
+            // Проверяем, загружена ли страница по HTTPS
+            const isHttps = window.location.protocol === 'https:';
+            
+            if (isHttps) {
+                // Если страница загружена по HTTPS, используем HTTPS для API
+                // Пытаемся получить API URL из URL параметров или используем тот же домен
+                const urlParams = new URLSearchParams(window.location.search);
+                const apiUrl = urlParams.get('apiUrl');
+                
+                if (apiUrl) {
+                    return apiUrl;
+                }
+                
+                // Используем тот же домен, но без порта (Render использует стандартные порты)
+                const hostname = window.location.hostname;
+                // Если это Render домен, используем HTTPS без порта
+                if (hostname.includes('onrender.com')) {
+                    // Определяем backend URL - обычно это seka.onrender.com (без -1)
+                    // Или можно использовать тот же домен, если backend и frontend на одном домене
+                    return `https://seka.onrender.com`;
+                }
+                
+                // Fallback: используем тот же домен
+                return `https://${hostname}`;
+            }
+            
+            // Для development используем localhost
             const hostname = window.location.hostname;
-            const port = window.location.port || '8080';
             const serverPort = '3006'; // Порт сервера API всегда 3006
             if (hostname === 'localhost' || hostname === '127.0.0.1') {
                 return `http://localhost:${serverPort}`;

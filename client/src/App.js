@@ -138,10 +138,11 @@ function App() {
     
     if (isProduction) {
       // В production используем относительный путь (тот же домен, HTTPS)
-      // Передаем Pusher credentials через URL параметры из конфигурации
+      // Передаем Pusher credentials и API URL через URL параметры из конфигурации
       const pusherKey = pusherConfig.key || '';
       const pusherCluster = pusherConfig.cluster || 'eu';
-      gameTableUrl = `/game-table-test.html?roomId=${currentRoom.id}&playerName=${encodeURIComponent(playerName)}&playerId=${playerId}&pusherKey=${encodeURIComponent(pusherKey)}&pusherCluster=${encodeURIComponent(pusherCluster)}`;
+      const apiUrl = API_URL || 'https://seka.onrender.com';
+      gameTableUrl = `/game-table-test.html?roomId=${currentRoom.id}&playerName=${encodeURIComponent(playerName)}&playerId=${playerId}&pusherKey=${encodeURIComponent(pusherKey)}&pusherCluster=${encodeURIComponent(pusherCluster)}&apiUrl=${encodeURIComponent(apiUrl)}`;
     } else {
       // В development используем localhost
       const hostname = window.location.hostname;
