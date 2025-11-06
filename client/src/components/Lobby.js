@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { API_URL } from '../config';
 import './Lobby.css';
 
 const Lobby = ({ serverStats, onJoinGame }) => {
@@ -12,6 +13,11 @@ const Lobby = ({ serverStats, onJoinGame }) => {
 
   // Функция для получения URL сервера
   const getServerUrl = () => {
+    // Используем API_URL из конфигурации (поддерживает переменные окружения)
+    if (API_URL) {
+      return API_URL;
+    }
+    // Fallback для development
     const hostname = window.location.hostname;
     const port = '3006';
     return hostname !== 'localhost' && hostname !== '127.0.0.1' 

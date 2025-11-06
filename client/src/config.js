@@ -2,13 +2,15 @@
 // Использует переменные окружения для production
 
 const getApiUrl = () => {
-  // В production используем переменную окружения или относительный путь
+  // Если указан явный URL API (через переменную окружения)
+  if (process.env.REACT_APP_API_URL) {
+    return process.env.REACT_APP_API_URL;
+  }
+  
+  // В production используем HTTPS того же домена (если frontend и backend на одном домене)
   if (process.env.NODE_ENV === 'production') {
-    // Если указан явный URL API
-    if (process.env.REACT_APP_API_URL) {
-      return process.env.REACT_APP_API_URL;
-    }
-    // Иначе используем относительный путь (тот же домен)
+    // Если frontend и backend на одном домене, используем относительный путь
+    // Иначе нужно указать REACT_APP_API_URL
     return '';
   }
   

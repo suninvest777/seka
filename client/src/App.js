@@ -4,6 +4,7 @@ import LobbySearching from './components/LobbySearching';
 import Lobby from './components/Lobby';
 import OnlineGame from './components/OnlineGame';
 import GameTable from './components/GameTable';
+import { API_URL } from './config';
 import './App.css';
 
 function App() {
@@ -21,6 +22,11 @@ function App() {
 
   // Функция для получения URL сервера
   const getServerUrl = () => {
+    // Используем API_URL из конфигурации (поддерживает переменные окружения)
+    if (API_URL) {
+      return API_URL;
+    }
+    // Fallback для development
     const hostname = window.location.hostname;
     const port = '3006';
     return hostname !== 'localhost' && hostname !== '127.0.0.1' 
