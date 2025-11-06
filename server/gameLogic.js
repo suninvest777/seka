@@ -324,9 +324,36 @@ class SekaGame {
     const player = this.players[playerIndex];
       
       // Проверяем, что это ход текущего игрока
-      if (this.currentPlayer !== playerIndex) {
-        console.warn(`⚠️ Ход принадлежит игроку ${this.currentPlayer}, но пытается ходить ${playerIndex}`);
-        throw new Error(`Не ваш ход. Ожидается игрок с индексом ${this.currentPlayer}`);
+      // ИСПРАВЛЕНИЕ: В состоянии waiting_for_vara_join разрешаем только joinVara и refuseVara
+      // Для этих действий проверяем, что игрок не в Варе
+      if (this.gameState === 'waiting_for_vara_join') {
+        if (action === 'joinVara' || action === 'refuseVara' || action === 'fold') {
+          // Для этих действий проверяем, что игрок не в Варе
+          if (this.varaPlayers.includes(playerId)) {
+            throw new Error('Вы уже в Варе');
+          }
+          // Разрешаем ход, даже если это не текущий игрок (для удобства)
+          // Но предпочтительно, чтобы это был текущий игрок
+          if (this.currentPlayer !== playerIndex) {
+            console.log(`⚠️ Игрок ${player.name} делает ход вне очереди в состоянии waiting_for_vara_join (разрешено)`);
+          }
+        } else {
+          // Для других действий в состоянии waiting_for_vara_join проверяем очередь
+          if (this.currentPlayer !== playerIndex) {
+            console.warn(`⚠️ Ход принадлежит игроку ${this.currentPlayer}, но пытается ходить ${playerIndex}`);
+            console.warn(`⚠️ Текущий игрок: ${this.players[this.currentPlayer]?.name || 'не найден'}`);
+            console.warn(`⚠️ Пытается ходить: ${player.name}`);
+            throw new Error(`Не ваш ход. Ожидается игрок с индексом ${this.currentPlayer}`);
+          }
+        }
+      } else {
+        // Для обычных состояний (betting, vara) строго проверяем очередь
+        if (this.currentPlayer !== playerIndex) {
+          console.warn(`⚠️ Ход принадлежит игроку ${this.currentPlayer}, но пытается ходить ${playerIndex}`);
+          console.warn(`⚠️ Текущий игрок: ${this.players[this.currentPlayer]?.name || 'не найден'}`);
+          console.warn(`⚠️ Пытается ходить: ${player.name}`);
+          throw new Error(`Не ваш ход. Ожидается игрок с индексом ${this.currentPlayer}`);
+        }
       }
       
       // Проверяем состояние игры
@@ -1488,7 +1515,26 @@ class SekaGame {
     this.clearTurnTimer();
     
     // Начинаем фазу принятия решений о Варе
-    this.currentPlayer = this.getNextPlayerIndex(this.players.findIndex(p => p.id === this.varaInitiator));
+    // ИСПРАВЛЕНИЕ: Находим первого игрока, который НЕ в Варе и НЕ спящий
+    const initiatorIndex = this.players.findIndex(p => p.id === this.varaInitiator);
+    if (initiatorIndex === -1) {
+      console.error('❌ Инициатор Вары не найден');
+      this.currentPlayer = 0;
+    } else {
+      // Находим следующего игрока после инициатора, который не в Варе
+      let nextIndex = (initiatorIndex + 1) % this.players.length;
+      let attempts = 0;
+      while (
+        attempts < this.players.length &&
+        (this.varaPlayers.includes(this.players[nextIndex].id) || 
+         this.players[nextIndex].isSleeping)
+      ) {
+        nextIndex = (nextIndex + 1) % this.players.length;
+        attempts++;
+      }
+      this.currentPlayer = nextIndex;
+      console.log(`🎯 Текущий игрок для решения о Варе: ${this.players[this.currentPlayer].name} (индекс ${this.currentPlayer})`);
+    }
     
     // Отправляем обновление состояния
     if (this.onStateUpdate) {
