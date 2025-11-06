@@ -77,7 +77,7 @@ class SekaGame {
     
     // Таймеры
     this.turnTimer = null;
-    this.turnTimeLimit = 30000; // 30 секунд на ход
+    this.turnTimeLimit = 20000; // 20 секунд на ход
     
     // Обработчики событий
     this.onStateUpdate = null;
