@@ -16,6 +16,12 @@ const pusherCluster = process.env.PUSHER_CLUSTER || "eu";
 if (!pusherAppId || !pusherKey || !pusherSecret) {
   console.error('❌ ОШИБКА: Pusher credentials не настроены!');
   console.error('❌ Требуются переменные окружения: PUSHER_APP_ID, PUSHER_KEY, PUSHER_SECRET');
+  console.error('📋 Отладочная информация:');
+  console.error('   PUSHER_APP_ID:', pusherAppId ? 'установлен' : 'НЕ УСТАНОВЛЕН');
+  console.error('   PUSHER_KEY:', pusherKey ? 'установлен' : 'НЕ УСТАНОВЛЕН');
+  console.error('   PUSHER_SECRET:', pusherSecret ? 'установлен' : 'НЕ УСТАНОВЛЕН');
+  console.error('   NODE_ENV:', process.env.NODE_ENV);
+  console.error('   PORT:', process.env.PORT);
   process.exit(1);
 }
 
