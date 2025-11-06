@@ -2087,6 +2087,41 @@
 
     <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
     <script>
+        // Установка Pusher credentials из переменных окружения или URL параметров
+        (function() {
+            // Пытаемся получить из URL параметров
+            const urlParams = new URLSearchParams(window.location.search);
+            const pusherKeyFromUrl = urlParams.get('pusherKey');
+            const pusherClusterFromUrl = urlParams.get('pusherCluster');
+            
+            // Пытаемся получить из переменных окружения React (если доступны)
+            // В production эти значения должны быть встроены в HTML при сборке
+            const pusherKeyFromEnv = typeof process !== 'undefined' && process.env && process.env.REACT_APP_PUSHER_KEY;
+            const pusherClusterFromEnv = typeof process !== 'undefined' && process.env && process.env.REACT_APP_PUSHER_CLUSTER;
+            
+            // Устанавливаем значения (приоритет: URL параметры > переменные окружения > значения по умолчанию)
+            if (pusherKeyFromUrl) {
+                window.PUSHER_KEY = pusherKeyFromUrl;
+            } else if (pusherKeyFromEnv) {
+                window.PUSHER_KEY = pusherKeyFromEnv;
+            }
+            // Если не установлено, будет ошибка при подключении
+            
+            if (pusherClusterFromUrl) {
+                window.PUSHER_CLUSTER = pusherClusterFromUrl;
+            } else if (pusherClusterFromEnv) {
+                window.PUSHER_CLUSTER = pusherClusterFromEnv;
+            } else {
+                window.PUSHER_CLUSTER = 'eu'; // Значение по умолчанию
+            }
+            
+            console.log('🔧 Pusher config:', {
+                key: window.PUSHER_KEY ? window.PUSHER_KEY.substring(0, 4) + '...' : 'НЕ УСТАНОВЛЕН',
+                cluster: window.PUSHER_CLUSTER
+            });
+        })();
+    </script>
+    <script>
         // Глобальные переменные
         let pusher = null;
         let channel = null;

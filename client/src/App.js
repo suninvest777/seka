@@ -137,7 +137,10 @@ function App() {
     
     if (isProduction) {
       // В production используем относительный путь (тот же домен, HTTPS)
-      gameTableUrl = `/game-table-test.html?roomId=${currentRoom.id}&playerName=${encodeURIComponent(playerName)}&playerId=${playerId}`;
+      // Передаем Pusher credentials через URL параметры
+      const pusherKey = process.env.REACT_APP_PUSHER_KEY || '';
+      const pusherCluster = process.env.REACT_APP_PUSHER_CLUSTER || 'eu';
+      gameTableUrl = `/game-table-test.html?roomId=${currentRoom.id}&playerName=${encodeURIComponent(playerName)}&playerId=${playerId}&pusherKey=${encodeURIComponent(pusherKey)}&pusherCluster=${encodeURIComponent(pusherCluster)}`;
     } else {
       // В development используем localhost
       const hostname = window.location.hostname;
