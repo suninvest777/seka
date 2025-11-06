@@ -1,3 +1,13 @@
+// Логирование в самом начале для отладки
+console.log('🚀 Запуск сервера...');
+console.log('📋 Проверка переменных окружения:');
+console.log('   NODE_ENV:', process.env.NODE_ENV);
+console.log('   PORT:', process.env.PORT);
+console.log('   PUSHER_APP_ID:', process.env.PUSHER_APP_ID ? 'установлен (' + process.env.PUSHER_APP_ID.substring(0, 4) + '...)' : 'НЕ УСТАНОВЛЕН');
+console.log('   PUSHER_KEY:', process.env.PUSHER_KEY ? 'установлен (' + process.env.PUSHER_KEY.substring(0, 4) + '...)' : 'НЕ УСТАНОВЛЕН');
+console.log('   PUSHER_SECRET:', process.env.PUSHER_SECRET ? 'установлен (' + process.env.PUSHER_SECRET.substring(0, 4) + '...)' : 'НЕ УСТАНОВЛЕН');
+console.log('   PUSHER_CLUSTER:', process.env.PUSHER_CLUSTER || 'eu (по умолчанию)');
+
 const express = require('express');
 const Pusher = require('pusher');
 const path = require('path');
