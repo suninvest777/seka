@@ -1057,6 +1057,8 @@ class SekaGame {
     let attempts = 0;
     const maxAttempts = this.players.length;
     
+    // ИСПРАВЛЕНИЕ: Переходим к следующему игроку, который еще не принял решение
+    // (не в Варе и не спящий)
     do {
       this.currentPlayer = (this.currentPlayer + 1) % this.players.length;
       attempts++;
@@ -1067,10 +1069,15 @@ class SekaGame {
     );
     
     if (attempts >= maxAttempts) {
+      // Все игроки приняли решение (вступили или отказались)
       console.log('🎯 Все игроки приняли решение о Варе');
       this.startVaraRound();
     } else {
-      console.log(`🎯 Ход игрока ${this.players[this.currentPlayer].name} для решения о Варе`);
+      const currentPlayerObj = this.players[this.currentPlayer];
+      console.log(`🎯 Ход игрока ${currentPlayerObj.name} (индекс ${this.currentPlayer}) для решения о Варе`);
+      console.log(`   - В Варе: ${currentPlayerObj.isInVara}`);
+      console.log(`   - Спасовал: ${currentPlayerObj.isFolded}`);
+      console.log(`   - Спящий: ${currentPlayerObj.isSleeping}`);
       this.startTurnTimer();
     }
     
@@ -1503,11 +1510,15 @@ class SekaGame {
     console.log(`🎯 Ожидаем вступления других игроков в Вару...`);
     
     // Сбрасываем состояние игроков для Вары
+    // ИСПРАВЛЕНИЕ: Все игроки (включая спасовавших) могут вступить в Вару
     for (const player of this.players) {
-      player.isFolded = false;
+      // НЕ сбрасываем isFolded - спасовавшие игроки остаются спасовавшими
+      // Но они могут вступить в Вару, если захотят
       player.isAllIn = false;
       player.currentBet = 0;
       player.totalBet = 0;
+      // Устанавливаем isInVara только для тех, кто уже в Варе (из вскрытия)
+      // Остальные игроки смогут вступить позже
       player.isInVara = this.varaPlayers.includes(player.id);
     }
     
