@@ -160,6 +160,20 @@ app.post('/api/vote-new-round', function(req, res) {
   });
 });
 
+// Корневой маршрут
+app.get('/', (req, res) => {
+  res.json({ 
+    success: true, 
+    message: 'Seka API Server работает!', 
+    timestamp: Date.now(),
+    endpoints: {
+      test: '/api/test',
+      rooms: '/api/rooms',
+      health: '/api/test'
+    }
+  });
+});
+
 // Тестовый endpoint для проверки доступности API
 app.get('/api/test', (req, res) => {
   res.json({ success: true, message: 'API работает!', timestamp: Date.now() });
