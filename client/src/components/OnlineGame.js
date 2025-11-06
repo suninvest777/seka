@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Pusher from 'pusher-js';
 import { pusherConfig } from '../pusherConfig';
+import { API_URL } from '../config';
 import './OnlineGame.css';
 
 const OnlineGame = ({ roomId, playerName, playerId, onBackToLobby, onStartGame }) => {
