@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#1a1a1a" /> 
+    <meta name="description" content="Онлайн игра Секка: Строгие правила и азарт" />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    
+    <title>Секка | Строгая Карточная Игра</title>
+    
+    <style>
+      :root {
+        /* Основная темная палитра */
+        --color-background: #1a1a1a;
+        --color-surface: #2c2c2c;
+        /* Золотой акцент */
+        --color-accent: #ffd700; 
+        --color-text: #e0e0e0;
+        
+        /* Шрифты */
+        --font-serif: 'Playfair Display', serif;
+        --font-sans: 'Roboto', sans-serif;
+      }
+      
+      body {
+        margin: 0;
+        background-color: var(--color-background);
+        color: var(--color-text);
+        font-family: var(--font-sans);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh; /* Занимает всю высоту экрана */
+      }
+      
+      /* Контейнер для центрирования и добавления "богатого" вида */
+      #root {
+        width: 100%;
+        max-width: 1400px;
+        background-color: var(--color-surface);
+        min-height: 100vh;
+        /* Современный эффект "богатой" тени */
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.8), 0 0 10px var(--color-accent);
+      }
+      
+      /* Строгий, заголовок с золотым акцентом */
+      h1 {
+        font-family: var(--font-serif);
+        font-weight: 700;
+        color: var(--color-accent);
+        text-align: center;
+        margin-top: 10vh;
+        /* Тень для создания эффекта свечения */
+        text-shadow: 0 0 5px var(--color-accent), 0 0 10px rgba(255, 215, 0, 0.5);
+      }
+    </style>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root">
+      <h1 style="font-size: 3em;">♠️ СЕККА | RIGOROUS 🃏</h1>
+    </div>
+  </body>
+</html>

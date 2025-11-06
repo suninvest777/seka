@@ -1,0 +1,400 @@
+/* Современные стили для лобби в стиле "Строгий и Богатый" */
+
+:root {
+  /* Основная темная палитра */
+  --color-background: #1a1a1a;
+  --color-surface: #2c2c2c;
+  --color-surface-light: #3a3a3a;
+  /* Золотой акцент */
+  --color-accent: #ffd700; 
+  --color-accent-dark: #b8860b;
+  --color-text: #e0e0e0;
+  --color-text-dim: #a0a0a0;
+  
+  /* Шрифты */
+  --font-serif: 'Playfair Display', serif;
+  --font-sans: 'Roboto', sans-serif;
+  
+  /* Тени */
+  --shadow-rich: 0 0 30px rgba(0, 0, 0, 0.8), 0 0 10px var(--color-accent);
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --shadow-glow: 0 0 20px rgba(255, 215, 0, 0.3);
+}
+
+/* Основной контейнер лобби */
+.lobby {
+  min-height: 100vh;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  padding: 20px 0;
+}
+
+.lobby-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: var(--color-surface);
+  border-radius: 20px;
+  box-shadow: var(--shadow-rich);
+  overflow: hidden;
+  border: 1px solid rgba(255, 215, 0, 0.2);
+}
+
+/* Заголовок */
+.lobby-header {
+  background: linear-gradient(135deg, var(--color-surface) 0%, var(--color-surface-light) 100%);
+  padding: 40px 30px;
+  text-align: center;
+  border-bottom: 2px solid var(--color-accent);
+}
+
+.lobby-title {
+  font-family: var(--font-serif);
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: var(--color-accent);
+  margin: 0 0 15px 0;
+  text-shadow: 0 0 10px var(--color-accent), 0 0 20px rgba(255, 215, 0, 0.5);
+  letter-spacing: 2px;
+}
+
+.lobby-subtitle {
+  font-size: 1.2rem;
+  color: var(--color-text-dim);
+  margin: 0;
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+
+/* Статистика сервера */
+.server-stats {
+  background-color: var(--color-surface-light);
+  padding: 25px 30px;
+  border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+}
+
+.server-stats h3 {
+  color: var(--color-accent);
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  margin: 0 0 15px 0;
+  text-shadow: 0 0 5px var(--color-accent);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.stat-item {
+  background-color: var(--color-surface);
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 215, 0, 0.2);
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-accent);
+  text-shadow: 0 0 5px var(--color-accent);
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: var(--color-text-dim);
+  margin-top: 5px;
+}
+
+/* Форма игрока */
+.player-form {
+  background-color: var(--color-surface-light);
+  padding: 30px;
+  border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+}
+
+.player-form h3 {
+  color: var(--color-accent);
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+  margin: 0 0 20px 0;
+  text-shadow: 0 0 5px var(--color-accent);
+}
+
+.player-form input {
+  width: 100%;
+  padding: 15px 20px;
+  font-size: 1.1rem;
+  background-color: var(--color-surface);
+  border: 2px solid rgba(255, 215, 0, 0.3);
+  border-radius: 10px;
+  color: var(--color-text);
+  margin: 10px 0;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.player-form input:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: var(--shadow-glow);
+}
+
+.player-form input::placeholder {
+  color: var(--color-text-dim);
+}
+
+/* Создание комнаты */
+.create-room {
+  background: linear-gradient(135deg, var(--color-surface-light) 0%, var(--color-surface) 100%);
+  padding: 30px;
+  border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+}
+
+.create-room h2 {
+  color: var(--color-accent);
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  margin: 0 0 20px 0;
+  text-shadow: 0 0 5px var(--color-accent);
+  border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+  padding-bottom: 10px;
+}
+
+.create-room input {
+  width: 100%;
+  padding: 15px 20px;
+  font-size: 1.1rem;
+  background-color: var(--color-surface);
+  border: 2px solid rgba(255, 215, 0, 0.3);
+  border-radius: 10px;
+  color: var(--color-text);
+  margin: 10px 0;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.create-room input:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: var(--shadow-glow);
+}
+
+.create-room input::placeholder {
+  color: var(--color-text-dim);
+}
+
+.create-btn {
+  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-dark) 100%);
+  color: var(--color-background);
+  border: none;
+  padding: 15px 30px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: var(--shadow-card);
+}
+
+.create-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-glow);
+}
+
+.create-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Присоединение к комнате */
+.join-room {
+  background-color: var(--color-surface-light);
+  padding: 30px;
+  border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+}
+
+.join-room h2 {
+  color: var(--color-accent);
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  margin: 0 0 20px 0;
+  text-shadow: 0 0 5px var(--color-accent);
+  border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+  padding-bottom: 10px;
+}
+
+.join-room input {
+  width: 100%;
+  padding: 15px 20px;
+  font-size: 1.1rem;
+  background-color: var(--color-surface);
+  border: 2px solid rgba(255, 215, 0, 0.3);
+  border-radius: 10px;
+  color: var(--color-text);
+  margin: 10px 0;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.join-room input:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: var(--shadow-glow);
+}
+
+.join-room input::placeholder {
+  color: var(--color-text-dim);
+}
+
+.join-btn {
+  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: var(--shadow-card);
+}
+
+.join-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(76, 175, 80, 0.4);
+}
+
+.join-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Список комнат */
+.rooms-list {
+  background-color: var(--color-surface);
+  padding: 30px;
+}
+
+.rooms-list h2 {
+  color: var(--color-accent);
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  margin: 0 0 20px 0;
+  text-shadow: 0 0 5px var(--color-accent);
+  border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+  padding-bottom: 10px;
+}
+
+.room-item {
+  background-color: var(--color-surface-light);
+  border: 2px solid rgba(255, 215, 0, 0.2);
+  border-radius: 15px;
+  padding: 20px;
+  margin: 15px 0;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.room-item:hover {
+  border-color: var(--color-accent);
+  box-shadow: var(--shadow-glow);
+  transform: translateY(-2px);
+}
+
+.room-name {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-accent);
+  margin: 0 0 10px 0;
+  text-shadow: 0 0 5px var(--color-accent);
+}
+
+.room-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.room-stat {
+  text-align: center;
+}
+
+.room-stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.room-stat-label {
+  font-size: 0.9rem;
+  color: var(--color-text-dim);
+  margin-top: 5px;
+}
+
+/* Ошибки */
+.error {
+  background-color: rgba(231, 76, 60, 0.1);
+  border: 2px solid #e74c3c;
+  color: #e74c3c;
+  padding: 15px;
+  border-radius: 10px;
+  margin: 15px 0;
+  text-align: center;
+  font-weight: 600;
+}
+
+/* Загрузка */
+.loading {
+  text-align: center;
+  color: var(--color-text-dim);
+  font-style: italic;
+  padding: 20px;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .lobby-container {
+    margin: 10px;
+    border-radius: 15px;
+  }
+  
+  .lobby-title {
+    font-size: 2.5rem;
+  }
+  
+  .lobby-subtitle {
+    font-size: 1rem;
+  }
+  
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .room-info {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .lobby-title {
+    font-size: 2rem;
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .room-info {
+    grid-template-columns: 1fr;
+  }
+}
